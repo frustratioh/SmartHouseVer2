@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#2A2A37</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="skyblue_alpha_65">#A684EBF2</color>
+    <color name="skyblue">#CEF3F8</color>
+    <color name="vinous">#984E4F</color>
+    <color name="gray">#94949B</color>
+    <color name="blue">#0B50A0</color>
+</resources>
