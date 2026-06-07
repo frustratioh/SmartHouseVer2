@@ -239,7 +239,13 @@ public class DeviceHoodActivity extends AppCompatActivity {
 
     public void backToDevice(View view) {
         if (isDirty) {
-            saveSettings();
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("Сохранить изменения?")
+                    .setMessage("Вы внесли изменения. Хотите применить их?")
+                    .setPositiveButton("Да", (dialog, which) -> saveSettings())
+                    .setNegativeButton("Нет", (dialog, which) -> finish())
+                    .setNeutralButton("Отмена", null)
+                    .show();
         } else {
             finish();
         }

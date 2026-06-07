@@ -133,10 +133,7 @@ public class EntryAddressActivity extends AppCompatActivity {
             missing.append(" - номер дома\n");
         }
 
-        if (!address.matches(".*кв\\.\\s*\\d+.*")) {
-            missing.append(" - номер квартиры\n");
-        }
-
+        // Квартира теперь не обязательна для частных домов
         return missing.toString();
     }
 

@@ -56,10 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
                         if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                             UserResponse user = response.body().get(0);
-                            long userId = user.getUserId();
-                            SharedPrefsManager.saveUserId(RegisterActivity.this, userId);
-                            SharedPrefsManager.saveUserData(RegisterActivity.this, user.getUsername(), email, null);
-                            startActivity(new Intent(RegisterActivity.this, CreationPinCodeActivity.class));
+                            android.widget.Toast.makeText(RegisterActivity.this, "Регистрация успешна! Теперь войдите в аккаунт", android.widget.Toast.LENGTH_LONG).show();
                             finish();
                         } else {
                             String errorMsg = "Ошибка регистрации";

@@ -49,14 +49,10 @@ public class DeviceAddingAdapter extends RecyclerView.Adapter<DeviceAddingAdapte
         DeviceTypeResponse type = deviceTypes.get(position);
         holder.tvName.setText(type.getName());
         
-        // Используем локальные иконки
         holder.ivDevice.setImageResource(getDeviceIcon(type.getDeviceTypeId()));
         
-        // Красим иконку в белый для единообразия
-        holder.ivDevice.setColorFilter(context.getColor(R.color.white));
-
         boolean isClickable = clickableIds == null || clickableIds.contains(type.getDeviceTypeId());
-        boolean isSelected = (selectedPosition == position);
+        boolean isSelected = (selectedPosition == position) && isClickable;
 
         if (isSelected) {
             holder.ivDevice.setBackgroundResource(R.drawable.circle_active);
@@ -66,23 +62,31 @@ public class DeviceAddingAdapter extends RecyclerView.Adapter<DeviceAddingAdapte
             holder.tvName.setTextColor(context.getColor(R.color.gray));
         }
         
-        // Красим иконку в белый
         holder.ivDevice.setColorFilter(context.getColor(R.color.white));
 
-        holder.itemView.setEnabled(isClickable);
-        holder.itemView.setAlpha(isClickable ? 1.0f : 0.5f);
-
-        holder.itemView.setOnClickListener(v -> {
-            selectedPosition = position;
-            listener.onDeviceTypeClick(type.getDeviceTypeId());
-            notifyDataSetChanged();
-        });
+        if (isClickable) {
+            holder.itemView.setAlpha(1.0f);
+            holder.itemView.setOnClickListener(v -> {
+                selectedPosition = position;
+                listener.onDeviceTypeClick(type.getDeviceTypeId());
+                notifyDataSetChanged();
+            });
+        } else {
+            holder.itemView.setAlpha(0.4f);
+            holder.itemView.setOnClickListener(null);
+        }
     }
 
     private int getDeviceIcon(Long typeId) {
         if (typeId == null) return R.drawable.ic_default_room;
         if (typeId == 4) return R.drawable.ic_lock; // Дверь
         if (typeId == 5) return R.drawable.ic_kitchen; // Холодильник
+        
+        // Заглушки
+        if (typeId == 102) return R.drawable.ic_warm_floo; // Как кондиционер
+        if (typeId == 103) return R.drawable.ic_hood;
+        if (typeId == 104) return R.drawable.ic_warm_floo; // Как температура
+
         return R.drawable.ic_default_room;
     }
 

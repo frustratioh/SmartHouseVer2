@@ -53,6 +53,13 @@ public class AddingDeviceActivity extends AppCompatActivity {
         deviceTypes.clear();
         deviceTypes.add(new DeviceTypeResponse(4L, "Умная дверь"));
         deviceTypes.add(new DeviceTypeResponse(5L, "Холодильник"));
+        
+        // Заглушки для красоты интерфейса (не кликабельны)
+        deviceTypes.add(new DeviceTypeResponse(101L, "Свет"));
+        deviceTypes.add(new DeviceTypeResponse(102L, "Кондиционер"));
+        deviceTypes.add(new DeviceTypeResponse(103L, "Вытяжка"));
+        deviceTypes.add(new DeviceTypeResponse(104L, "Температура"));
+        deviceTypes.add(new DeviceTypeResponse(105L, "Вентилятор"));
     }
 
     private void setupAdapter() {

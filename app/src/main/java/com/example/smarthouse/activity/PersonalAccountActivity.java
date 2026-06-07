@@ -136,36 +136,43 @@ public class PersonalAccountActivity extends AppCompatActivity {
 
         SharedPrefsManager.saveUserData(this, username, email, address);
 
-        UpdateAccountRequest request = new UpdateAccountRequest(email, address);
-        RetrofitClient.getInstance().updateUserAccount("eq." + userId, request)
-                .enqueue(new Callback<List<UserResponse>>() {
-                    @Override
-                    public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(PersonalAccountActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
+        new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setTitle("Сохранить изменения?")
+                .setMessage("Вы уверены, что хотите изменить данные профиля?")
+                .setPositiveButton("Да", (dialog, which) -> {
+                    UpdateAccountRequest request = new UpdateAccountRequest(email, address);
+                    RetrofitClient.getInstance().updateUserAccount("eq." + userId, request)
+                            .enqueue(new Callback<List<UserResponse>>() {
+                                @Override
+                                public void onResponse(Call<List<UserResponse>> call, Response<List<UserResponse>> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(PersonalAccountActivity.this, "Сохранено", Toast.LENGTH_SHORT).show();
 
-                            if (response.body() != null && !response.body().isEmpty()) {
-                                UserResponse user = response.body().get(0);
-                                SharedPrefsManager.saveUserData(PersonalAccountActivity.this,
-                                        user.getUsername(), user.getEmail(), user.getAddress());
-                            }
-                        } else {
+                                        if (response.body() != null && !response.body().isEmpty()) {
+                                            UserResponse user = response.body().get(0);
+                                            SharedPrefsManager.saveUserData(PersonalAccountActivity.this,
+                                                    user.getUsername(), user.getEmail(), user.getAddress());
+                                        }
+                                    } else {
 
-                            try {
-                                Toast.makeText(PersonalAccountActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                                        try {
+                                            Toast.makeText(PersonalAccountActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT).show();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
 
-                            loadData();
-                        }
-                    }
+                                        loadData();
+                                    }
+                                }
 
-                    @Override
-                    public void onFailure(Call<List<UserResponse>> call, Throwable t) {
-                        Toast.makeText(PersonalAccountActivity.this, "Сохранено локально", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                                @Override
+                                public void onFailure(Call<List<UserResponse>> call, Throwable t) {
+                                    Toast.makeText(PersonalAccountActivity.this, "Сохранено локально", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .setNegativeButton("Нет", null)
+                .show();
     }
 
     private byte[] getBytes(InputStream inputStream) throws Exception {
